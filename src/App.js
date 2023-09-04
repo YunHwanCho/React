@@ -5,10 +5,16 @@ import bg from "./img/bg.jpg";
 import { useState } from "react";
 import data from "./data.js";
 import { Routes, Route, Link, useNavigate, Outlet, useParams } from "react-router-dom";
+import styled from 'styled-components'
+import Detail from "./Detail.js";
+import axios from 'axios'
+
+
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes, setshoes] = useState(data);
   let navigate = useNavigate();
+  let [cnt, setcnt ] = useState(0);
   return (
     <div className="App">
       <Navbar bg="light" variant="light">
@@ -48,7 +54,9 @@ function App() {
             </div>
           }
         />
-        <Route path="/detail/:id" element={<Detail shoes ={shoes}/>}/>
+
+        <Route path="/detail" element={<Detail shoes ={shoes}/>}/>
+        {/* <Route path="/detail/:id" element={<Detail shoes ={shoes}/>}/> */}
 
 
         <Route path="*" element={<div>X</div>} />
@@ -63,6 +71,23 @@ function App() {
         </Route>
         {/* //Nested routes */}
       </Routes>
+
+      <button onClick={()=>{
+        //로딩중 ui띄우기
+
+        axios.get('https://codingapple1.github.io/shop/data2.json')
+        .then((result)=>{
+          let copy = [...shoes, ...result.data];
+          setshoes(copy);
+          //로딩중ui 숨기기
+
+        })
+        .catch(()=>{
+          console.log('실패함 ㅅㄱ')
+        })
+
+      }}>더 많은 상품 보기</button>
+
     </div>
   );
 }
@@ -76,36 +101,14 @@ function Card(props) {
         src={"https://codingapple1.github.io/shop/shoes" + props.i + ".jpg"}
         width="80%"
       />
+      
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.price}</p>
     </div>
   );
 }
 
-function Detail(props) {
-  let {id} = useParams();
-  let find = props.shoes.find(function(x){
-    return x.id == id
-  });
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-6">
-          <img  
-            src={"https://codingapple1.github.io/shop/shoes"+ (find) +".jpg"}
-            width="100%"
-          />
-        </div>
-        <div className="col-md-6">
-          <h4 className="pt-5">{find.title}</h4>
-          <p>{find.content}</p>
-          <p>{find.price}</p>
-          <button className="btn btn-danger">주문하기</button>
-        </div>
-      </div>
-    </div>
-  );
-}
+
 
 function About(){
   return(
@@ -116,9 +119,11 @@ function About(){
   )
 }
 function Event(){
+  let navigate = useNavigate();
   return(
     <div>
       <h4>오늘의 이벤트</h4>
+     
       <Outlet></Outlet>
     </div>
   )
