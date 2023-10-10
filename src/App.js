@@ -6,15 +6,17 @@ import { useState } from "react";
 import data from "./data.js";
 import { Routes, Route, Link, useNavigate, Outlet, useParams } from "react-router-dom";
 import styled from 'styled-components'
-import Detail from "./Detail.js";
+import Detail from "./routes/Detail.js";
 import axios from 'axios'
+import Cart from './routes/Cart.js'
 
 
 
 function App() {
   let [shoes, setshoes] = useState(data);
   let navigate = useNavigate();
-  let [cnt, setcnt ] = useState(0);
+  let [load,setload] = useState('로딩중입니다.');
+  let [cnt, setcnt ] = useState(2);
   return (
     <div className="App">
       <Navbar bg="light" variant="light">
@@ -34,6 +36,8 @@ function App() {
 
       
 
+      
+
       <Routes>
         <Route
           path="/"
@@ -50,6 +54,7 @@ function App() {
                     return <Card shoes={shoes[i]} i={i + 1}></Card>;
                   })}
                 </div>
+                
               </div>
             </div>
           }
@@ -69,22 +74,45 @@ function App() {
             <p>조윤환 서비스</p>
           </div>} />
         </Route>
+        <Route path = "/cart" element = {<Cart></Cart>}/>
         {/* //Nested routes */}
       </Routes>
 
       <button onClick={()=>{
+        <div>{load}</div>
         //로딩중 ui띄우기
-
-        axios.get('https://codingapple1.github.io/shop/data2.json')
-        .then((result)=>{
-          let copy = [...shoes, ...result.data];
-          setshoes(copy);
-          //로딩중ui 숨기기
-
-        })
-        .catch(()=>{
-          console.log('실패함 ㅅㄱ')
-        })
+        
+        {
+          cnt == 2 ?  axios.get('https://codingapple1.github.io/shop/data2.json')
+          .then((result)=>{
+            let copy = [...shoes, ...result.data];
+            setshoes(copy);
+            setcnt(3)
+            // setload('')
+            
+            //로딩중ui 숨기기
+  
+          })
+          .catch(()=>{
+            console.log('실패함 ㅅㄱ')
+          }) :  axios.get('https://codingapple1.github.io/shop/data3.json')
+          .then((result)=>{
+            let copy = [...shoes, ...result.data];
+            setshoes(copy);
+            setcnt(3)
+            // setload('')
+            
+            //로딩중ui 숨기기
+  
+          })
+          .catch(()=>{
+            console.log('실패함 ㅅㄱ')
+          })
+  
+  
+        }
+        
+        // axios.post('/sadaf', {name:'cho'})
 
       }}>더 많은 상품 보기</button>
 
