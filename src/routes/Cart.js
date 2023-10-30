@@ -1,39 +1,49 @@
-import Table from 'react-bootstrap/Table';
-import { useSelector } from 'react-redux';
+import Table from "react-bootstrap/Table";
+import { useSelector, useDispatch } from "react-redux";
+import { changeName } from "./../store.js";
 
-function Cart(){
+function Cart() {
+  let state = useSelector((state) => {
+    return state;
+  });
+  let dispatch = useDispatch();
 
-    let state = useSelector((state) =>{return state})
-
-    console.log(state);
-    return(
-        <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>이름</th>
-          <th>수량</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-            state.cart.map((a,i)=>{
-                return <tr>
+  return (
+    <div>
+      {state.user}의 장바구니
+      <Table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>이름</th>
+            <th>수량</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          {state.cart.map((a, i) => {
+            return (
+              <tr key={i}>
                 <td>1</td>
                 <td>{state.cart[i].name}</td>
                 <td>{state.cart[i].count}</td>
-                <td>hi</td>
+                <td>@mdo</td>
+                <td>
+                  <button
+                    onClick={() => {
+                      dispatch(changeName());
+                    }}
+                  >
+                    +
+                  </button>
+                </td>
               </tr>
-            })
-        }
-        
-      </tbody>
-    </Table>
-        
-
-    )
-
+            );
+          })}
+        </tbody>
+      </Table>
+    </div>
+  );
 }
 
-export default Cart
+export default Cart;
