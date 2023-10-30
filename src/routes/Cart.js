@@ -23,7 +23,7 @@ function Cart(){
                 <td>1</td>
                 <td>{state.cart[i].name}</td>
                 <td>{state.cart[i].count}</td>
-                <td>@mdo</td>
+                <td>hi</td>
               </tr>
             })
         }
