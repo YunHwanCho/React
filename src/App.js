@@ -24,7 +24,7 @@ function App() {
           <Navbar.Brand href="/">Portfolio1</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() =>{navigate('/')}}>shop</Nav.Link>
-            <Nav.Link onClick={() =>{navigate('/detail')}}>detail</Nav.Link>
+            <Nav.Link onClick={() =>{navigate('/cart')}}>Cart</Nav.Link>
             <Nav.Link onClick={() =>{navigate('/about')}}>About</Nav.Link>
             <Nav.Link onClick={() =>{navigate('/event')}}>Event</Nav.Link>
             <Button variant="outline-dark" className="Nav-button">
